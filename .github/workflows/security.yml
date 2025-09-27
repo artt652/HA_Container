@@ -34,7 +34,10 @@ jobs:
       - name: Run Gitleaks
         uses: gitleaks/gitleaks-action@v2
         with:
-          args: detect --source . --no-git
+          args: |
+            detect \
+              --source . \
+              --no-git
 
   grep-check:
     name: Grep for risky patterns
@@ -45,12 +48,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Search for dangerous commands
-  run: |
-    echo "Checking for dangerous patterns..."
-    grep -nE \
-      "curl .*sh|wget .*sh|rm -rf|--privileged|/:|/etc|/var/run/"\
+        run: |
+          echo "Checking for dangerous patterns..."
+          grep -nE \
+            "curl .*sh|wget .*sh|rm -rf|--privileged|/:|/etc|/var/run/"\
 "docker.sock" \
-      -R . || true
+            -R . || true
 
   codeql:
     name: CodeQL (static analysis)
