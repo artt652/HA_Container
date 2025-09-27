@@ -8,6 +8,7 @@ on:
     branches: [main]
   schedule:
     - cron: '0 3 * * 1'
+  workflow_dispatch: {}
 
 jobs:
   shellcheck:
@@ -87,3 +88,4 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y yamllint
       - name: Run yamllint
         run: yamllint .
+        
