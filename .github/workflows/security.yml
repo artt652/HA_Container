@@ -17,7 +17,8 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Run ShellCheck
         uses: ludeeus/action-shellcheck@master
         with:
@@ -29,7 +30,8 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Run Gitleaks
         uses: gitleaks/gitleaks-action@v2
         with:
@@ -44,13 +46,13 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Search for dangerous commands
         run: |
           echo "Checking for dangerous patterns..."
           grep -nE \
-            "curl .*sh|wget .*sh|rm -rf|--privileged|/:|/etc|/var/run/"\
-"docker.sock" \
+            "curl .*sh|wget .*sh|rm -rf|--privileged|/:|/etc|/var/run/docker.sock" \
             -R . || true
 
   codeql:
@@ -61,7 +63,8 @@ jobs:
       contents: read
       security-events: write
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
@@ -78,7 +81,8 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Install yamllint
         run: sudo apt-get update && sudo apt-get install -y yamllint
       - name: Run yamllint
