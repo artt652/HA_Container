@@ -11,30 +11,25 @@ fi
 
 echo "✅ Найден контейнер: $CONTAINER_ID"
 
-# Временный каталог
 TMP_DIR=$(mktemp -d)
 echo "📂 Использую временный каталог: $TMP_DIR"
 
-# Скачивание HACS
 echo "⬇️ Скачиваю HACS..."
 curl -sL https://github.com/hacs/integration/releases/latest/download/hacs.zip -o "$TMP_DIR/hacs.zip"
 
-# Распаковка
 echo "📦 Распаковываю..."
 unzip -q "$TMP_DIR/hacs.zip" -d "$TMP_DIR"
 
-# Проверка папки
-if [ ! -d "$TMP_DIR/custom_components/hacs" ]; then
-  echo "❌ Ошибка: не найдена папка custom_components/hacs после распаковки!"
+# теперь папка называется просто "hacs"
+if [ ! -d "$TMP_DIR/hacs" ]; then
+  echo "❌ Ошибка: после распаковки нет папки hacs!"
   exit 1
 fi
 
-# Копирование в контейнер
 echo "📤 Копирую HACS в контейнер..."
-docker exec "$CONTAINER_ID" mkdir -p /config/custom_components
-docker cp "$TMP_DIR/custom_components/hacs" "$CONTAINER_ID":/config/custom_components/
+docker exec "$CONTAINER_ID" mkdir -p /config/custom_components/hacs
+docker cp "$TMP_DIR/hacs/." "$CONTAINER_ID":/config/custom_components/hacs/
 
-# Очистка
 rm -rf "$TMP_DIR"
 
 echo "✅ Установка завершена!"
