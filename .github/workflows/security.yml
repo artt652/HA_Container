@@ -8,7 +8,6 @@ on:
     branches: [main]
   schedule:
     - cron: '0 3 * * 1'
-  workflow_dispatch: {}
 
 jobs:
   shellcheck:
@@ -46,11 +45,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Search for dangerous commands
-        run: |
-          echo "Checking for dangerous patterns..."
-          grep -nE \
-            "curl .*sh|wget .*sh|rm -rf|--privileged|/:|/etc|/var/run/docker.sock" \
-            -R . || true
+  run: |
+    echo "Checking for dangerous patterns..."
+    grep -nE \
+      "curl .*sh|wget .*sh|rm -rf|--privileged|/:|/etc|/var/run/"\
+"docker.sock" \
+      -R . || true
 
   codeql:
     name: CodeQL (static analysis)
