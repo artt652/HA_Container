@@ -11,17 +11,17 @@ fi
 echo "=== Установка code-server ==="
 
 # --- Запрос пароля ---
-read -s -p "Введите пароль для входа в code-server: " USER_PASSWORD; echo ""
-read -s -p "Повторите пароль: " USER_PASSWORD_CONFIRM; echo ""
+read -r -s -p "Введите пароль для входа в code-server: " USER_PASSWORD; echo ""
+read -r -s -p "Повторите пароль: " USER_PASSWORD_CONFIRM; echo ""
 while [ "$USER_PASSWORD" != "$USER_PASSWORD_CONFIRM" ]; do
     echo "Пароли не совпадают. Попробуйте снова."
-    read -s -p "Введите пароль: " USER_PASSWORD; echo ""
-    read -s -p "Повторите пароль: " USER_PASSWORD_CONFIRM; echo ""
+    read -r -s -p "Введите пароль: " USER_PASSWORD; echo ""
+    read -r -s -p "Повторите пароль: " USER_PASSWORD_CONFIRM; echo ""
 done
 [ -n "$USER_PASSWORD" ] || ERR "Пароль не может быть пустым."
 
 # --- Запрос порта ---
-read -p "Введите порт для code-server (по умолчанию 8080): " USER_PORT
+read -r -p "Введите порт для code-server (по умолчанию 8088): " USER_PORT
 USER_PORT=${USER_PORT:-8088}
 
 # --- Выбор раздела ---
