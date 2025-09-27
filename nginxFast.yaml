@@ -1,3 +1,4 @@
+---
 version: '3.8'
 services:
   app:
@@ -5,9 +6,9 @@ services:
     container_name: nginx-proxy-manager
     restart: unless-stopped
     ports:
-      - '80:80'   # HTTP-трафик
-      - '81:81'   # Веб-интерфейс NPM
-      - '443:443' # HTTPS-трафик
+      - '80:80'     # HTTP-трафик
+      - '81:81'     # Веб-интерфейс NPM
+      - '443:443'   # HTTPS-трафик
     volumes:
       - /udobnidom/nginx-proxy-manager/data:/data
       - /udobnidom/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
