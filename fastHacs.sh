@@ -27,12 +27,12 @@ unzip -q "$TMP_DIR/hacs.zip" -d "$TMP_DIR"
 
 # 6. Копирование в контейнер (внутрь /config/custom_components)
 echo "📦 Копирую HACS в контейнер..."
-docker exec "$CONTAINER_ID" sh -c 'mkdir -p /config/custom_components'
-docker cp "$TMP_DIR/custom_components/hacs" "$CONTAINER_ID:/config/custom_components/"
+docker exec "$CONTAINER_NAME" sh -c 'mkdir -p /config/custom_components'
+docker cp "$TMP_DIR/custom_components/hacs" "${CONTAINER_NAME}:/config/custom_components/"
 
 # 7. Очистка временных файлов
 rm -rf "$TMP_DIR"
 
 # 8. Перезапуск контейнера
-docker restart "$CONTAINER_ID"
+docker restart "$CONTAINER_NAME"
 echo "✅ HACS установлен и контейнер перезапущен."
