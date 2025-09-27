@@ -5,7 +5,7 @@ echo "Начинаем установку Portainer..."
 
 # --- Запрос порта у пользователя ---
 DEFAULT_PORT="9000"
-read -p "Введите порт для Portainer UI (по умолчанию: ${DEFAULT_PORT}): " USER_PORT
+read -r -p "Введите порт для Portainer UI (по умолчанию: ${DEFAULT_PORT}): " USER_PORT
 
 # Если пользователь ничего не ввел, используем порт по умолчанию
 if [ -z "$USER_PORT" ]; then
