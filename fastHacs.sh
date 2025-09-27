@@ -3,7 +3,7 @@ set -e
 
 echo "📦 Список запущенных контейнеров:"
 
-# Используем mapfile вместо $() с split
+# Используем mapfile вместо $(...) чтобы избежать проблем со сплитом
 mapfile -t CONTAINERS < <(docker ps --format "{{.Names}}")
 
 if [ "${#CONTAINERS[@]}" -eq 0 ]; then
@@ -19,7 +19,7 @@ for i in "${!CONTAINERS[@]}"; do
     fi
 done
 
-if [ $DEFAULT_INDEX -ne -1 ]; then
+if [ "$DEFAULT_INDEX" -ne -1 ]; then
     echo "ℹ️ По умолчанию выбран контейнер 'homeassistant' (номер $DEFAULT_INDEX)"
 else
     DEFAULT_INDEX=0
