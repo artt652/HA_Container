@@ -9,12 +9,23 @@ if [ ${#CONTAINERS[@]} -eq 0 ]; then
     exit 1
 fi
 
+DEFAULT_INDEX=-1
 for i in "${!CONTAINERS[@]}"; do
     echo "[$i] ${CONTAINERS[$i]}"
+    if [ "${CONTAINERS[$i]}" == "homeassistant" ]; then
+        DEFAULT_INDEX=$i
+    fi
 done
 
-read -p "Выберите номер контейнера для установки HACS (по умолчанию 0): " INDEX
-INDEX=${INDEX:-0}
+if [ $DEFAULT_INDEX -ne -1 ]; then
+    echo "ℹ️ По умолчанию выбран контейнер 'homeassistant' (номер $DEFAULT_INDEX)"
+else
+    DEFAULT_INDEX=0
+    echo "ℹ️ По умолчанию выбран первый контейнер в списке (номер 0)"
+fi
+
+read -p "Введите номер контейнера для установки HACS (по умолчанию $DEFAULT_INDEX): " INDEX
+INDEX=${INDEX:-$DEFAULT_INDEX}
 
 if ! [[ "$INDEX" =~ ^[0-9]+$ ]] || [ "$INDEX" -ge "${#CONTAINERS[@]}" ]; then
     echo "❌ Неверный выбор."
