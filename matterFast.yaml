@@ -1,3 +1,4 @@
+---
 version: '3.8'
 services:
   matter-server:
@@ -11,8 +12,8 @@ services:
       - apparmor=unconfined
     volumes:
       - /udobnidom/matter-server/data:/data
-      - /run/dbus:/run/dbus:ro # Доступ к D-Bus для связи с адаптером Matter
+      - /run/dbus:/run/dbus:ro  # Доступ к D-Bus для связи с адаптером Matter
     env_file:
       - stack.env
-    network_mode: host # Использует сетевой стек хоста для обнаружения устройств
+    network_mode: host  # Использует сетевой стек хоста для обнаружения устройств
     # Порт 5580 будет доступен на IP-адресе хоста
