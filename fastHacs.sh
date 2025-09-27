@@ -20,9 +20,9 @@ curl -sL https://github.com/hacs/integration/releases/latest/download/hacs.zip -
 echo "📦 Распаковываю..."
 unzip -q "$TMP_DIR/hacs.zip" -d "$TMP_DIR"
 
-# теперь папка называется просто "hacs"
 if [ ! -d "$TMP_DIR/hacs" ]; then
-  echo "❌ Ошибка: после распаковки нет папки hacs!"
+  echo "❌ Ошибка: папка 'hacs' не найдена после распаковки!"
+  ls -la "$TMP_DIR"
   exit 1
 fi
 
@@ -32,6 +32,6 @@ docker cp "$TMP_DIR/hacs/." "$CONTAINER_ID":/config/custom_components/hacs/
 
 rm -rf "$TMP_DIR"
 
-echo "✅ Установка завершена!"
-echo "ℹ️ Перезапусти Home Assistant через интерфейс или командой:"
+echo "✅ HACS установлен и готов к использованию!"
+echo "ℹ️ Перезапусти Home Assistant:"
 echo "   docker restart $CONTAINER_ID"
