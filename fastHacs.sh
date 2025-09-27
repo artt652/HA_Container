@@ -22,11 +22,11 @@ docker exec "$CONTAINER_ID" bash -c '
   fi
 '
 
-# 4. Установка HACS (новый URL)
+# 4. Установка HACS (через curl)
 docker exec "$CONTAINER_ID" bash -c '
   echo "⬇️ Скачиваю и устанавливаю HACS..."
   cd /config
-  wget -O - https://get.hacs.xyz | bash -
+  curl -fsSL https://get.hacs.xyz | bash -
 '
 
 # 5. Перезапуск контейнера
