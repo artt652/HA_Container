@@ -1,14 +1,28 @@
 #!/bin/bash
 set -e
 
-CONTAINER_NAME=${1:-homeassistant}
-echo "🔍 Ищу контейнер ${CONTAINER_NAME}..."
-CONTAINER_ID=$(docker ps -qf "name=${CONTAINER_NAME}")
+echo "📦 Список запущенных контейнеров:"
+CONTAINERS=($(docker ps --format "{{.Names}}"))
 
-if [ -z "$CONTAINER_ID" ]; then
-  echo "❌ Контейнер ${CONTAINER_NAME} не найден."
-  exit 1
+if [ ${#CONTAINERS[@]} -eq 0 ]; then
+    echo "❌ Нет запущенных контейнеров."
+    exit 1
 fi
+
+for i in "${!CONTAINERS[@]}"; do
+    echo "[$i] ${CONTAINERS[$i]}"
+done
+
+read -p "Выберите номер контейнера для установки HACS (по умолчанию 0): " INDEX
+INDEX=${INDEX:-0}
+
+if ! [[ "$INDEX" =~ ^[0-9]+$ ]] || [ "$INDEX" -ge "${#CONTAINERS[@]}" ]; then
+    echo "❌ Неверный выбор."
+    exit 1
+fi
+
+CONTAINER_NAME="${CONTAINERS[$INDEX]}"
+echo "🔍 Выбран контейнер: ${CONTAINER_NAME}"
 
 TMP_DIR=$(mktemp -d)
 echo "📂 Использую временный каталог: $TMP_DIR"
@@ -32,5 +46,7 @@ if [[ "$REPLY" =~ ^[Yy]$ ]]; then
     docker restart "$CONTAINER_NAME"
     echo "🔄 Контейнер перезапущен."
 else
-    echo "⚠️ Контейнер не перезапущен. Сделайте это вручную позже."
+    echo "⚠️ Контейнер не перезапущен."
+    echo "Пример команды для ручного перезапуска:"
+    echo "   docker restart ${CONTAINER_NAME}"
 fi
