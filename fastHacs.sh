@@ -15,7 +15,7 @@ fi
 echo "🔍 Найден контейнер ${CONTAINER_NAME} (${CONTAINER_ID})"
 
 # 3. Проверка наличия каталога /config внутри контейнера
-docker exec "$CONTAINER_ID" bash -c '
+docker exec "$CONTAINER_ID" sh -c '
   if [ ! -d /config ]; then
     echo "❌ Директория /config не найдена внутри контейнера."
     exit 1
@@ -23,10 +23,10 @@ docker exec "$CONTAINER_ID" bash -c '
 '
 
 # 4. Установка HACS (через curl)
-docker exec "$CONTAINER_ID" bash -c '
+docker exec "$CONTAINER_ID" sh -c '
   echo "⬇️ Скачиваю и устанавливаю HACS..."
   cd /config
-  curl -fsSL https://get.hacs.xyz | bash -
+  curl -fsSL https://get.hacs.xyz | sh -
 '
 
 # 5. Перезапуск контейнера
