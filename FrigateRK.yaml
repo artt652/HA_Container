@@ -1,3 +1,4 @@
+---
 version: "3.9"
 
 services:
@@ -33,16 +34,14 @@ services:
       FRIGATE_MQTT_HOST: "localhost"
       # FRIGATE_MQTT_USER: "mqtt_user"
       # FRIGATE_MQTT_PASSWORD: "mqtt_password"
-      # Для Home Assistant можно добавить переменные, если ваши интеграции их требуют
+      # Для Home Assistant можно добавить переменные, 
+      # если ваши интеграции их требуют
       # Например, если используете Frigate+:
       # FRIGATE_GENAI_API_KEY: "ваш_ключ"
       # Если используете RTSP с авторизацией:
       # FRIGATE_RTSP_USER: "rtsp_user"
       # FRIGATE_RTSP_PASSWORD: "rtsp_password"
-
-
-
-
+      
 # version: "3.9"
 
 # services:
