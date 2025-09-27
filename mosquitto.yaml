@@ -1,3 +1,4 @@
+---
 version: '3.8'
 services:
   mosquitto:
@@ -8,8 +9,10 @@ services:
       - /udobnidom/mosquitto/data:/mosquitto/data
       - /udobnidom/mosquitto/logs:/mosquitto/log
     ports:
-      - '1883:1883' # Стандартный порт MQTT
-      - '9001:9001' # Порт для Websockets
+      - '1883:1883'
+        # Стандартный порт MQTT
+      - '9001:9001'
+        # Порт для Websockets
     restart: unless-stopped
     networks:
       - homeiot_internal
