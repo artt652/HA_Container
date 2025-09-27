@@ -60,10 +60,9 @@ jobs:
       actions: read
       contents: read
       security-events: write
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ 'javascript' ] # можно добавить go, cpp, java, ruby если нужно
+      uses: github/codeql-action/init@v3
+      with:
+        languages: javascript
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
