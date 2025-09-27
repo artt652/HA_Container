@@ -15,5 +15,5 @@ services:
       - /run/dbus:/run/dbus:ro  # Доступ к D-Bus для связи с адаптером Matter
     env_file:
       - stack.env
-    network_mode: host  # Использует сетевой стек хоста для обнаружения устройств
+    network_mode: host  # Для обнаружения устройств
     # Порт 5580 будет доступен на IP-адресе хоста
