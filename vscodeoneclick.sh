@@ -22,7 +22,7 @@ done
 
 # --- Запрос порта ---
 read -p "Введите порт для code-server (по умолчанию 8080): " USER_PORT
-USER_PORT=${USER_PORT:-8080}
+USER_PORT=${USER_PORT:-8088}
 
 # --- Выбор раздела ---
 mapfile -t raw_opts < <(df -h --output=target,avail | awk 'NR>1 && $2+0 > 1 {print $1}' | sort -u)
