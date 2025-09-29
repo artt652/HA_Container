@@ -57,7 +57,7 @@ cat <<EOL | sudo tee /opt/portainer/compose.yaml > /dev/null
 services:
   portainer:
     container_name: portainer
-    image: portainer/portainer-ce:2.32.0
+    image: portainer/portainer-ce:2.31.3
     command: -H unix:///var/run/docker.sock
     restart: always
     ports:
