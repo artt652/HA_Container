@@ -53,7 +53,6 @@ sudo mkdir -p /opt/portainer/data/stacks
 # Создаем файл docker-compose.yaml для Portainer
 echo "Создаем файл compose.yaml для Portainer..."
 cat <<EOL | sudo tee /opt/portainer/compose.yaml > /dev/null
-version: '3.8'
 
 services:
   portainer:
