@@ -9,7 +9,7 @@ services:
       - "8081:80"
       # Порт 8081 хоста → порт 80 контейнера
     volumes:
-      - "/udobnidom/kodexplorer:/var/www/html"
+      - "/udobnidom:/var/www/html"
       - "/udobnidom/kodexplorer/data:/data"
       # Корень ОС
     restart: unless-stopped
