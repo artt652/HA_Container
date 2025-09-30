@@ -6,7 +6,7 @@ services:
     image: kodcloud/kodexplorer:latest
     container_name: kodexplorer
     ports:
-      - "81:80" 
+      - "8081:80" 
       # Порт 81 хоста → порт 80 контейнера
     volumes:
       - "/:/var/www/html"                 
