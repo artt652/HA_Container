@@ -6,12 +6,10 @@ services:
     image: kodcloud/kodexplorer:latest
     container_name: kodexplorer
     ports:
-      - "8081:80" 
+      - "8081:80"
       # Порт 81 хоста → порт 80 контейнера
     volumes:
-      - "/udobnidom:/var/www/html"                 
+      - "/udobnidom/kodexplorer:/var/www/html"               
       # Корень ОС
-      - "/udobnidom/kodexplorer/data:/data" 
-      # Папка данных KodExplorer
     restart: unless-stopped
-    
+    user: "1000:1000"
