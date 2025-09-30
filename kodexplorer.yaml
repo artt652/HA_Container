@@ -1,0 +1,17 @@
+---
+version: "3.8"
+
+services:
+  kodexplorer:
+    image: kodcloud/kodexplorer:latest
+    container_name: kodexplorer
+    ports:
+      - "81:80" 
+      # Порт 81 хоста → порт 80 контейнера
+    volumes:
+      - "/:/var/www/html"                 
+      # Корень ОС
+      - "/udobnidom/kodexplorer/data:/data" 
+      # Папка данных KodExplorer
+    restart: unless-stopped
+    
