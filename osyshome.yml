@@ -5,35 +5,18 @@ services:
     image: python:3.11-slim
     container_name: osyshome
     restart: unless-stopped
-    network_mode: host
+    working_dir: /app/osysHome
+    volumes:
+      - ./osysHome:/app/osysHome
+      - ./docs:/app/docs
     environment:
       TZ: Europe/Moscow
-    volumes:
-      - /opt/osyshome/config.yaml:/app/config.yaml
-      - /opt/osyshome/plugins:/app/plugins
-      - /opt/osyshome/data:/app/data
+    ports:
+      - "5000:5000"
     command: >
       bash -c "
-      set -e;
-      apt-get update && apt-get install -y git curl python3-pip && rm -rf /var/lib/apt/lists/*;
-      pip install --no-cache-dir pdoc3 flask jinja2 requests;
-      mkdir -p /app/osysHome;
-      if [ ! -f /app/osysHome/main.py ]; then
-        echo '📥 Клонирую osysHome...';
-        git clone https://github.com/Anisan/osysHome.git /app/osysHome;
-      fi;
-      if [ ! -d /app/plugins/Modules ]; then
-        echo '🔧 Клонирую плагины...';
-        mkdir -p /app/plugins;
-        git clone https://github.com/Anisan/osysHome-Modules.git /app/plugins/Modules;
-        git clone https://github.com/Anisan/osysHome-Objects.git /app/plugins/Objects;
-        git clone https://github.com/Anisan/osysHome-Users.git /app/plugins/Users;
-        git clone https://github.com/Anisan/osysHome-Scheduler.git /app/plugins/Scheduler;
-        git clone https://github.com/Anisan/osysHome-wsServer.git /app/plugins/wsServer;
-        git clone https://github.com/Anisan/osysHome-Dashboard.git /app/plugins/Dashboard;
-        git clone https://github.com/Anisan/osysHome-Mqtt.git /app/plugins/Mqtt;
-      fi;
-      echo '📄 Генерация документации...';
-      cd /app/osysHome && PYTHONPATH=. pdoc --html --output-dir /app/data/docs app;
-      echo '🚀 Запуск osysHome...';
-      python3 /app/osysHome/main.py"
+        pip install --upgrade pip &&
+        pip install PyYAML Flask SQLAlchemy Flask_SQLAlchemy Flask-Cors flask_apispec flask-restx Flask-Bcrypt flask-login flask_socketio flask_wtf Flask-Caching psycopg2-binary pdoc croniter tzdata requests flask-debugtoolbar Flask-MonitoringDashboard pycryptodome &&
+        PYTHONPATH=/app/osysHome pdoc --html --output-dir /app/docs app &&
+        python main.py
+      "
