@@ -20,28 +20,26 @@ services:
         condition: any
     command: >
       bash -c "
-      apt-get update && apt-get install -y git curl && rm -rf /var/lib/apt/lists/* &&
-      pip install --no-cache-dir pdoc3 &&
-      if [ ! -d /app ]; then
-        mkdir -p /app;
-      fi &&
-      cd /app &&
-      if [ ! -f main.py ]; then
-        echo '📥 Клонирую osysHome...' &&
-        git clone https://github.com/Anisan/osysHome.git /app;
-      fi &&
+      set -e;
+      apt-get update && apt-get install -y git curl && rm -rf /var/lib/apt/lists/*;
+      pip install --no-cache-dir pdoc3;
+      mkdir -p /app/osysHome;
+      if [ ! -f /app/osysHome/main.py ]; then
+        echo '📥 Клонирую osysHome...';
+        git clone https://github.com/Anisan/osysHome.git /app/osysHome;
+      fi;
       if [ ! -d /app/plugins/Modules ]; then
-        echo '🔧 Устанавливаю плагины...' &&
-        mkdir -p /app/plugins &&
-        git clone https://github.com/Anisan/osysHome-Modules.git /app/plugins/Modules &&
-        git clone https://github.com/Anisan/osysHome-Objects.git /app/plugins/Objects &&
-        git clone https://github.com/Anisan/osysHome-Users.git /app/plugins/Users &&
-        git clone https://github.com/Anisan/osysHome-Scheduler.git /app/plugins/Scheduler &&
-        git clone https://github.com/Anisan/osysHome-wsServer.git /app/plugins/wsServer &&
-        git clone https://github.com/Anisan/osysHome-Dashboard.git /app/plugins/Dashboard &&
+        echo '🔧 Устанавливаю плагины...';
+        mkdir -p /app/plugins;
+        git clone https://github.com/Anisan/osysHome-Modules.git /app/plugins/Modules;
+        git clone https://github.com/Anisan/osysHome-Objects.git /app/plugins/Objects;
+        git clone https://github.com/Anisan/osysHome-Users.git /app/plugins/Users;
+        git clone https://github.com/Anisan/osysHome-Scheduler.git /app/plugins/Scheduler;
+        git clone https://github.com/Anisan/osysHome-wsServer.git /app/plugins/wsServer;
+        git clone https://github.com/Anisan/osysHome-Dashboard.git /app/plugins/Dashboard;
         git clone https://github.com/Anisan/osysHome-Mqtt.git /app/plugins/Mqtt;
-      fi &&
-      echo '📄 Генерация документации...' &&
-      pdoc --html --output-dir /app/data/docs settings_sample.py app plugins &&
-      echo '🚀 Запуск osysHome...' &&
-      python3 main.py"
+      fi;
+      echo '📄 Генерация документации...';
+      pdoc --html --output-dir /app/data/docs /app/osysHome/settings_sample.py /app/osysHome/app /app/osysHome/plugins;
+      echo '🚀 Запуск osysHome...';
+      python3 /app/osysHome/main.py"
