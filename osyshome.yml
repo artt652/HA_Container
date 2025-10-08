@@ -4,7 +4,6 @@ services:
   osyshome:
     image: python:3.11-slim
     container_name: osyshome
-    build: .
     restart: unless-stopped
     network_mode: host
     environment:
@@ -21,9 +20,18 @@ services:
         condition: any
     command: >
       bash -c "
-      pip install pdoc3 &&
+      apt-get update && apt-get install -y git curl && rm -rf /var/lib/apt/lists/* &&
+      pip install --no-cache-dir pdoc3 &&
+      if [ ! -d /app ]; then
+        mkdir -p /app;
+      fi &&
+      cd /app &&
+      if [ ! -f main.py ]; then
+        echo '📥 Клонирую osysHome...' &&
+        git clone https://github.com/Anisan/osysHome.git /app;
+      fi &&
       if [ ! -d /app/plugins/Modules ]; then
-        echo '🔧 Устанавливаю плагины osysHome...';
+        echo '🔧 Устанавливаю плагины...' &&
         mkdir -p /app/plugins &&
         git clone https://github.com/Anisan/osysHome-Modules.git /app/plugins/Modules &&
         git clone https://github.com/Anisan/osysHome-Objects.git /app/plugins/Objects &&
@@ -32,8 +40,8 @@ services:
         git clone https://github.com/Anisan/osysHome-wsServer.git /app/plugins/wsServer &&
         git clone https://github.com/Anisan/osysHome-Dashboard.git /app/plugins/Dashboard &&
         git clone https://github.com/Anisan/osysHome-Mqtt.git /app/plugins/Mqtt;
-      fi;
-      echo '📄 Генерация документации...';
-      pdoc --docformat google --no-show-source --output-dir /app/data/docs settings_sample.py app plugins;
-      echo '🚀 Запуск osysHome...';
+      fi &&
+      echo '📄 Генерация документации...' &&
+      pdoc --html --output-dir /app/data/docs settings_sample.py app plugins &&
+      echo '🚀 Запуск osysHome...' &&
       python3 main.py"
