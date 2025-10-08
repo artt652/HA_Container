@@ -2,20 +2,26 @@ version: "3.8"
 
 services:
   osyshome:
+    image: python:3.11-slim
     container_name: osyshome
     build: .
     restart: unless-stopped
     network_mode: host
     environment:
-      - TZ=${TZ}
+      - TZ=Europe/Moscow
     ports:
-      - "${OSYSHOME_PORT}:5000"
+      - "5000:5000"
     volumes:
-      - ${OSYSHOME_CONFIG}:/app/config.yaml
-      - ${OSYSHOME_PLUGINS}:/app/plugins
-      - ${OSYSHOME_DATA}:/app/data
+      - /opt/osyshome/config.yaml:/app/config.yaml
+      - /opt/osyshome/plugins:/app/plugins
+      - /opt/osyshome/data:/app/data
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
     command: >
       bash -c "
+      pip install pdoc3 &&
       if [ ! -d /app/plugins/Modules ]; then
         echo '🔧 Устанавливаю плагины osysHome...';
         mkdir -p /app/plugins &&
@@ -28,7 +34,6 @@ services:
         git clone https://github.com/Anisan/osysHome-Mqtt.git /app/plugins/Mqtt;
       fi;
       echo '📄 Генерация документации...';
-      pip install pdoc3 &&
-      pdoc --docformat google --no-show-source --output-dir /app/docs settings_sample.py app plugins;
+      pdoc --docformat google --no-show-source --output-dir /app/data/docs settings_sample.py app plugins;
       echo '🚀 Запуск osysHome...';
       python3 main.py"
