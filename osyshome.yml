@@ -1,24 +1,52 @@
 version: "3.9"
 
 services:
-  osysHome:
-    image: python:3.11-slim
-    container_name: osysHome
-    working_dir: /app
-    volumes:
-      - ./osysHome:/app
-      - ./docs:/app/docs
-    environment:
-      - PYTHONUNBUFFERED=1
-      - PYTHONPATH=/app
-    command: >
-      bash -c "
-        pip install --upgrade pip &&
-        pip install PyYAML Flask SQLAlchemy Flask_SQLAlchemy Flask-Cors flask_apispec flask-restx Flask-Bcrypt flask-login flask_socketio flask_wtf Flask-Caching psycopg2-binary pdoc croniter tzdata requests flask-debugtoolbar Flask-MonitoringDashboard pycryptodome &&
-        pdoc -o /app/docs app &&
-        python main.py
-      "
+  osyshome:
+    image: python:3.13
+    container_name: osyshome
+    restart: unless-stopped
     ports:
       - "5000:5000"
-      - "8080:8080"
-    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ./config.yaml:/app/config.yaml
+      - ./plugins:/app/plugins
+      - ./docs:/app/docs
+      - ./:/app
+    environment:
+      PYTHONUNBUFFERED: 1
+    entrypoint: /bin/bash
+    command: >
+      -c "
+      apt-get update && apt-get install -y git curl &&
+      mkdir -p /app/plugins &&
+      git clone https://github.com/Anisan/osysHome-Modules.git /app/plugins/Modules &&
+      git clone https://github.com/Anisan/osysHome-Objects.git /app/plugins/Objects &&
+      git clone https://github.com/Anisan/osysHome-Users.git /app/plugins/Users &&
+      git clone https://github.com/Anisan/osysHome-Scheduler.git /app/plugins/Scheduler &&
+      git clone https://github.com/Anisan/osysHome-wsServer.git /app/plugins/wsServer &&
+      git clone https://github.com/Anisan/osysHome-Dashboard.git /app/plugins/Dashboard &&
+      pip install --no-cache-dir \
+        PyYAML \
+        Flask \
+        SQLAlchemy \
+        Flask_SQLAlchemy \
+        Flask-Cors \
+        flask_apispec \
+        flask-restx \
+        Flask-Bcrypt \
+        flask-login \
+        flask_socketio \
+        flask_wtf \
+        Flask-Caching \
+        psycopg2-binary \
+        pdoc \
+        croniter \
+        tzdata \
+        requests \
+        flask-debugtoolbar \
+        Flask-MonitoringDashboard \
+        pycryptodome &&
+      pdoc --docformat google --no-show-source --output-dir /app/docs settings_sample.py app plugins &&
+      python main.py
+      "
