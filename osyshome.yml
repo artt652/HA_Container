@@ -38,6 +38,6 @@ services:
         git clone https://github.com/Anisan/osysHome-Mqtt.git /app/plugins/Mqtt;
       fi;
       echo '📄 Генерация документации...';
-      cd /app/osysHome && PYTHONPATH=. pdoc --html --output-dir /app/data/docs osysHome.main;
+      cd /app/osysHome && PYTHONPATH=. pdoc --html --output-dir /app/data/docs app;
       echo '🚀 Запуск osysHome...';
       python3 /app/osysHome/main.py"
