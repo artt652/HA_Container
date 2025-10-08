@@ -20,12 +20,18 @@ services:
       -c "
       apt-get update && apt-get install -y git curl &&
       mkdir -p /app/plugins &&
-      git clone https://github.com/Anisan/osysHome-Modules.git /app/plugins/Modules &&
-      git clone https://github.com/Anisan/osysHome-Objects.git /app/plugins/Objects &&
-      git clone https://github.com/Anisan/osysHome-Users.git /app/plugins/Users &&
-      git clone https://github.com/Anisan/osysHome-Scheduler.git /app/plugins/Scheduler &&
-      git clone https://github.com/Anisan/osysHome-wsServer.git /app/plugins/wsServer &&
-      git clone https://github.com/Anisan/osysHome-Dashboard.git /app/plugins/Dashboard &&
+      git clone https://github.com/Anisan/osysHome-Modules.git /app/plugins/Modules ||
+      true &&
+      git clone https://github.com/Anisan/osysHome-Objects.git /app/plugins/Objects ||
+      true &&
+      git clone https://github.com/Anisan/osysHome-Users.git /app/plugins/Users ||
+      true &&
+      git clone https://github.com/Anisan/osysHome-Scheduler.git /app/plugins/Scheduler ||
+      true &&
+      git clone https://github.com/Anisan/osysHome-wsServer.git /app/plugins/wsServer ||
+      true &&
+      git clone https://github.com/Anisan/osysHome-Dashboard.git /app/plugins/Dashboard ||
+      true &&
       pip install --no-cache-dir \
         PyYAML \
         Flask \
