@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  osyshome:
+    container_name: osyshome
+    build: .
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - TZ=${TZ}
+    ports:
+      - "${OSYSHOME_PORT}:5000"
+    volumes:
+      - ${OSYSHOME_CONFIG}:/app/config.yaml
+      - ${OSYSHOME_PLUGINS}:/app/plugins
+      - ${OSYSHOME_DATA}:/app/data
+    command: >
+      bash -c "
+      if [ ! -d /app/plugins/Modules ]; then
+        echo '🔧 Устанавливаю плагины osysHome...';
+        mkdir -p /app/plugins &&
+        git clone https://github.com/Anisan/osysHome-Modules.git /app/plugins/Modules &&
+        git clone https://github.com/Anisan/osysHome-Objects.git /app/plugins/Objects &&
+        git clone https://github.com/Anisan/osysHome-Users.git /app/plugins/Users &&
+        git clone https://github.com/Anisan/osysHome-Scheduler.git /app/plugins/Scheduler &&
+        git clone https://github.com/Anisan/osysHome-wsServer.git /app/plugins/wsServer &&
+        git clone https://github.com/Anisan/osysHome-Dashboard.git /app/plugins/Dashboard &&
+        git clone https://github.com/Anisan/osysHome-Mqtt.git /app/plugins/Mqtt;
+      fi;
+      echo '📄 Генерация документации...';
+      pip install pdoc3 &&
+      pdoc --docformat google --no-show-source --output-dir /app/docs settings_sample.py app plugins;
+      echo '🚀 Запуск osysHome...';
+      python3 main.py"
