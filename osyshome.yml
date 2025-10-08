@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.9"
 
 services:
   osyshome:
@@ -7,27 +7,23 @@ services:
     restart: unless-stopped
     network_mode: host
     environment:
-      - TZ=Europe/Moscow
+      TZ: Europe/Moscow
     volumes:
       - /opt/osyshome/config.yaml:/app/config.yaml
       - /opt/osyshome/plugins:/app/plugins
       - /opt/osyshome/data:/app/data
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: any
     command: >
       bash -c "
       set -e;
-      apt-get update && apt-get install -y git curl && rm -rf /var/lib/apt/lists/*;
-      pip install --no-cache-dir pdoc3;
+      apt-get update && apt-get install -y git curl python3-pip && rm -rf /var/lib/apt/lists/*;
+      pip install --no-cache-dir pdoc3 flask jinja2 requests;
       mkdir -p /app/osysHome;
       if [ ! -f /app/osysHome/main.py ]; then
         echo '📥 Клонирую osysHome...';
         git clone https://github.com/Anisan/osysHome.git /app/osysHome;
       fi;
       if [ ! -d /app/plugins/Modules ]; then
-        echo '🔧 Устанавливаю плагины...';
+        echo '🔧 Клонирую плагины...';
         mkdir -p /app/plugins;
         git clone https://github.com/Anisan/osysHome-Modules.git /app/plugins/Modules;
         git clone https://github.com/Anisan/osysHome-Objects.git /app/plugins/Objects;
