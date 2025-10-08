@@ -1,22 +1,24 @@
 version: "3.9"
 
 services:
-  osyshome:
+  osysHome:
     image: python:3.11-slim
-    container_name: osyshome
-    restart: unless-stopped
-    working_dir: /app/osysHome
+    container_name: osysHome
+    working_dir: /app
     volumes:
-      - ./osysHome:/app/osysHome
+      - ./osysHome:/app
       - ./docs:/app/docs
     environment:
-      TZ: Europe/Moscow
-    ports:
-      - "5000:5000"
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
     command: >
       bash -c "
         pip install --upgrade pip &&
         pip install PyYAML Flask SQLAlchemy Flask_SQLAlchemy Flask-Cors flask_apispec flask-restx Flask-Bcrypt flask-login flask_socketio flask_wtf Flask-Caching psycopg2-binary pdoc croniter tzdata requests flask-debugtoolbar Flask-MonitoringDashboard pycryptodome &&
-        PYTHONPATH=/app/osysHome pdoc --html --output-dir /app/docs app &&
+        pdoc -o /app/docs app &&
         python main.py
       "
+    ports:
+      - "5000:5000"
+      - "8080:8080"
+    restart: unless-stopped
