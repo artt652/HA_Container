@@ -8,8 +8,6 @@ services:
     network_mode: host
     environment:
       - TZ=Europe/Moscow
-    ports:
-      - "5000:5000"
     volumes:
       - /opt/osyshome/config.yaml:/app/config.yaml
       - /opt/osyshome/plugins:/app/plugins
@@ -40,6 +38,6 @@ services:
         git clone https://github.com/Anisan/osysHome-Mqtt.git /app/plugins/Mqtt;
       fi;
       echo '📄 Генерация документации...';
-      pdoc --html --output-dir /app/data/docs /app/osysHome/settings_sample.py /app/osysHome/app /app/osysHome/plugins;
+      pdoc --html --output-dir /app/data/docs /app/osysHome;
       echo '🚀 Запуск osysHome...';
       python3 /app/osysHome/main.py"
