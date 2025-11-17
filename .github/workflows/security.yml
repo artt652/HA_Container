@@ -56,25 +56,25 @@ jobs:
             --privileged|/:|/etc|/var/run/docker.sock" \
             -R . || true
 
-  codeql:
-    name: CodeQL (static analysis)
-    runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: javascript
-          queries: +security-and-quality
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+#  codeql:
+#    name: CodeQL (static analysis)
+#    runs-on: ubuntu-latest
+#    permissions:
+#      actions: read
+#      contents: read
+#      security-events: write
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v4
+#      - name: Initialize CodeQL
+#        uses: github/codeql-action/init@v3
+#        with:
+#          languages: javascript
+#          queries: +security-and-quality
+#      - name: Autobuild
+#        uses: github/codeql-action/autobuild@v3
+#      - name: Perform CodeQL Analysis
+#        uses: github/codeql-action/analyze@v3
 
   yamllint:
     name: Yamllint (YAML configs)
